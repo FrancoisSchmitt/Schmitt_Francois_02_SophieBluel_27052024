@@ -1,0 +1,33 @@
+.login {
+    padding-top: 9.375em;
+    padding-bottom: 20.3125em;
+}
+
+.login h2 {
+    text-align: center;
+    padding-bottom: 2em;
+}
+
+.login form {
+    gap: 2em;
+}
+
+.login form, .login form div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login input {
+    height: 3.1875em;
+    width: 23.6875em;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border: none;
+}
+
+.login label {
+    text-align: start;
+    width: 100%;
+    padding-bottom: 1em;
+}
