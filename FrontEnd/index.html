@@ -23,6 +23,7 @@
 		<link rel="stylesheet" href="./assets/style.css" />
 		<link rel="stylesheet" href="./assets/login.css" />
 	</head>
+
 	<body>
 		<div class="head-edit-mode edit">
 			<i class="fa-regular fa-pen-to-square"></i>
@@ -42,22 +43,66 @@
 		</header>
 		<main>
 			<!-- The Modal -->
-
-			<div id="edit-picture" class="modal">
-				<!-- Modal content -->
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h2>Gallery photos</h2>
-					<div class="modal-gallery"></div>
-					<button id="create">Ajouter une photo</button>
+			<section>
+				<div id="edit-picture" class="modal">
+					<!-- Modal content -->
+					<div class="modal-content">
+						<span class="close-edit-picture close">&times;</span>
+						<h2>Gallery photos</h2>
+						<div class="modal-gallery"></div>
+						<button id="create">Ajouter une photo</button>
+					</div>
 				</div>
-			</div>
 
-			<div id="add-picture" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
+				<div
+					id="add-picture"
+					class="modal"
+					aria-hidden="true"
+					role="dialog"
+					aria-labelledby="titlemodal">
+					<div class="modal-content">
+						<div class="modal-wrapper" id="add-photo-modal">
+							<ul class="button-modal">
+								<li class="modal-return" id="back-first-modal">
+									<i class="fa-solid fa-arrow-left"></i>
+								</li>
+								<li class="modal-closed-btn" id="closed-btn">
+									<i class="fa-solid fa-xmark"></i>
+								</li>
+							</ul>
+							<h3>Ajout photo</h3>
+							<form id="add-photo-form" name="add-photo-form">
+								<ul>
+									<li>
+										<i class="fa-regular fa-image grey" id="imageMod2"></i><label
+											for="add-photo2" id="labelImageM2">+ Ajouter photo</label>
+										<input class="add-photo2" id="add-photo2" type="file" />
+										<p>jpg, png : 4mo max</p>
+									</li>
+									<li>
+										<img
+											id="preview"
+											src="./assets/images/sophie-bluel.png"
+											alt="Prévisualisation de l'image"
+											/>
+									</li>
+								</ul>
+								<div class="infoTitlePicModale">
+									<label for="titleModalPic" class="labelTitleModal">Titre</label>
+									<input type="text" name="title" id="titleModalPic" />
+								</div>
+								<div class="infoCategoryPicModale">
+									<label for="categoryModalPic" class="labelTitleModal">Catégorie</label>
+									<select name="category" id="category-select">
+									</select>
+								</div>
+							</form>
+						</div>
+						<input type="submit" id="valider" value="Valider" />
+					</div>
 				</div>
-			</div>
+			</section>
+
 			<section id="introduction">
 				<figure>
 					<img src="./assets/images/sophie-bluel.png" alt="" />

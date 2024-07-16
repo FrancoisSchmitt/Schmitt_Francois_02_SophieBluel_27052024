@@ -91,7 +91,13 @@ footer nav ul {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 40%;
+    gap: 46px;
+    display: flex;
+    flex-direction: column;
+}
+.modal-content h2{
+    text-align: center;
 }
 
 /* The Close Button */
@@ -100,6 +106,8 @@ footer nav ul {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    display: flex;
+    justify-content: right;
 }
 
 .close:hover,

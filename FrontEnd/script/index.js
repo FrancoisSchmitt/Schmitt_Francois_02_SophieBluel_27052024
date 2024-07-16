@@ -17,8 +17,8 @@ const hasMainContent = (element) => {
 	img.alt = element.title;
 	figcaption.innerHTML += element?.title;
 
-	figure.setAttribute("data-id", element?.category?.id);
-	figure.classList.add("picturesSort");
+	figure.setAttribute("data", element?.category?.id);
+	figure.classList.add("pics");
 
 	gallery.appendChild(figure);
 	figure.appendChild(img);
@@ -27,18 +27,30 @@ const hasMainContent = (element) => {
 
 const hasContentInModal = (element) => {
 	const modalGallery = document.querySelector(".modal-gallery");
+
+	const figureImg = document.createElement("figure");
 	const imgModal = document.createElement("img");
-	const i = document.createElement("i");
+	const trashIcon = document.createElement("i");
+
+	figureImg.setAttribute("data-id", element.id)
+	figureImg.classList.add("figure-image-modal");
 
 	imgModal.src = element.imageUrl;
 	imgModal.alt = element.title;
 
 	imgModal.classList.add("small-image");
-	i.classList.add("fa-" + "solid", "fa-" + "trash");
-
-	modalGallery.appendChild(imgModal);
-	modalGallery.appendChild(i);
+	trashIcon.classList.add("fa-" + "solid", "fa-" + "trash-" + "can", "trashIcon");
+	modalGallery.appendChild(figureImg);
+	figureImg.appendChild(imgModal);
+	figureImg.appendChild(trashIcon);
+		trashIcon.addEventListener("click", (e) => {
+			e.preventDefault();
+			console.log(e);
+			const id = figureImg.getAttribute("data-id");
+			deleteWorks(id, figureImg);
+		});
 };
+
 
 const hasIdCategoriesForSort = (element) => {
 	const myProject = document.querySelector(".categories");
@@ -49,6 +61,36 @@ const hasIdCategoriesForSort = (element) => {
 	span.setAttribute("id", element?.id);
 	myProject.appendChild(span);
 };
+
+
+
+// const selectCategory = function (element) {
+// 	const categorySelect = document.getElementById("category-select");
+// 	categorySelect.innerHTML = "";
+// 	// Ajout d'un champ vide
+// 	const emptyField = document.createElement("option");
+// 	emptyField.value = "";
+// 	emptyField.innerText = "";
+// 	emptyField.selected = true;
+// 	categorySelect.appendChild(emptyField);
+// 	//Affichage des catégories
+// 	element.forEach((category) => {
+// 		const option = document.createElement("option");
+// 		option.value = category.id;
+// 		option.innerText = category.name;
+// 		categorySelect.appendChild(option);
+// 	});
+// };
+
+
+
+/**
+ *
+ * @function getWorks is a function to require all data from the api 
+ * @function categories is a function to require all categories from the api 
+ * @function deleteWorks is a function to delete project elements
+ * 
+ */
 
 async function getWorks() {
 	fetch("http://localhost:5678/api/works", {
@@ -94,6 +136,7 @@ async function categories() {
 			.then((response) => {
 				response.forEach((element) => {
 					hasIdCategoriesForSort(element);
+					selectCategory(element);
 				});
 			})
 			.catch((error) => {
@@ -107,9 +150,31 @@ async function categories() {
 		const myProject = document.querySelector(".categories");
 		myProject.style.display = "none";
 	}
-};
+}
 
 categories();
+
+const deleteWorks = async (id) => {
+	await fetch("http://localhost:5678/api/works/" + id, {
+		method: "DELETE",
+		headers: {
+			Authorization: "Bearer " + localStorage.getItem("token"),
+			Accept: "application/json",
+		},
+	})
+		.then((response) => {
+			hasContentInModal(id);
+		})
+		.then((data) => data)
+		.catch((err) => alert(err));
+};
+/**
+ *
+ * @const isLogged is a arrow function to check if we are logged or note 
+ * @const isEditMode is a arrow function to edit you'r profile project 
+ * @const hasLogout is a arrow function to logout and return in index
+ * 
+ */
 
 
 const isLogged = () => {
@@ -146,7 +211,7 @@ const hasLogout = () => {
 			localStorage.removeItem("token");
 			localStorage.removeItem("userId");
 			event.preventDefault();
-			window.location.replace("login.html");
+			window.location.replace("index.html");
 		});
 	}
 };
@@ -157,14 +222,16 @@ hasLogout();
 
 const isSort = () => {
 	const sortList = document.querySelector(".categories");
-	const dataIdPicture = document.querySelectorAll(".gallery.picturesSort");
+	const dataIdPicture = document.getElementsByClassName("pics");
 	console.log(dataIdPicture);
-	console.log(dataIdPicture.getAttribute("data-id"));
+	// console.log(dataIdPicture.getAttribute("data"));
 	sortList.addEventListener("click", (event) => {
-		event.stopPropagation()
+		event.stopPropagation();
 		console.log("BUBBLING PHASE", "SOOORT");
-		console.log(event.target)
+		console.log(event.target);
 	});
 };
 
 isSort()
+
+

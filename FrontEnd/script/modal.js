@@ -19,7 +19,24 @@ const isModalAddPictureOpen = () => {
 		console.log(event);
 	});
 };
-isModalAddPictureOpen();
-const isModalPictureClose = () => {};
 
-const isModalAddPictureClose = () => {};
+isModalAddPictureOpen();
+const isModalPictureClose = () => {
+	const closeModal = document.querySelector(".close-add-picture");
+	const modalAddPictureOpen = document.querySelector("#add-picture");
+	closeModal.addEventListener("click", (event) => {
+		modalAddPictureOpen.style.display = "none";
+	});
+};
+
+const isModalAddPictureClose = () => {
+	const modalPictureIsHide = document.querySelector("#edit-picture");
+	const closeModal = document.querySelector(".close-edit-picture");
+
+	closeModal.addEventListener("click", (event) => {
+		modalPictureIsHide.style.display = "none";
+	});
+};
+
+isModalAddPictureClose();
+isModalAddPictureOpen();
