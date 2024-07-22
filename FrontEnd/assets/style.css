@@ -41,6 +41,9 @@
 .edit-mode {
 	align-items: center;
 }
+.edit i, .edit button{
+	cursor: pointer;
+}
 
 .head-edit-mode {
 	width: 100%;
@@ -52,11 +55,12 @@
 }
 
 .my-project {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	gap: 3em;
-	align-items: baseline;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+    align-items: center;
+
 }
 
 .small-image {

@@ -13,7 +13,7 @@
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="./assets/reset.css" />
 		<link rel="stylesheet" href="./assets/main.css" />
-		<link rel="stylesheet" href="./assets/style.css" />
+		<link rel="stylesheet" href="./assets/login.css" />
 	</head>
 	<body>
 		<header>
@@ -28,13 +28,22 @@
 			</nav>
 		</header>
 		<main>
-			<h2 class="titleLog">Log In</h2>
 			<form id="formLog" action="#" method="post">
-				<label for="email">E-mail</label>
-				<input id="email" name="email" type="email" />
-				<label for="password">Mot de passe</label>
-				<input id="password" name="password" type="password" />
-				<input id="btnLogin" name="btnLogin" type="submit" value="Se connecter" />
+				<h2 class="titleLog">Log In</h2>
+				<div>
+					<label for="email">E-mail</label>
+					<input id="email" name="email" type="email" />
+				</div>
+				<div>
+					<label for="password">Mot de passe</label>
+					<input id="password" name="password" type="password" />
+				</div>
+				<input
+					id="btnLogin"
+					name="btnLogin"
+					type="submit"
+					value="Se connecter"
+				/>
 				<a href="#">Mot de passe oublié</a>
 			</form>
 		</main>

@@ -7,89 +7,138 @@
  *
  */
 
-const hasMainContent = (element) => {
-	const gallery = document.querySelector(".gallery");
-	const figure = document.createElement("figure");
-	const figcaption = document.createElement("figcaption");
-	const img = document.createElement("img");
-
-	img.src = element.imageUrl;
-	img.alt = element.title;
-	figcaption.innerHTML += element?.title;
-
-	figure.setAttribute("data", element?.category?.id);
-	figure.classList.add("pics");
-
-	gallery.appendChild(figure);
-	figure.appendChild(img);
-	figure.appendChild(figcaption);
+const isSort = () => {
+	const sortList = document.querySelector(".categories");
+	// const elemSortList = document.querySelectorAll(".sort-list");
+	const dataIdPicture = document.querySelectorAll(".pics");
+	// sortList.forEach((element) => {
+	sortList.addEventListener("click", (event) => {
+		event.stopPropagation();
+		// console.log(sort);
+		console.log(event.target);
+		dataIdPicture.forEach((element) => {
+			// elemSortList.forEach((elementSort) => {
+			if (element.dataset.id !== event.target.id) {
+				element.style.display = "none";
+				event.target.classList.add("active");
+			} else {
+				element.style.display = "block";
+			}
+			if (event.target.id == 0) {
+				element.style.display = "block";
+			}
+		});
+	});
 };
 
-const hasContentInModal = (element) => {
+const hasMainContent = (elements) => {
+	const gallery = document.querySelector(".gallery");
+
+	elements.forEach((element) => {
+		const figure = document.createElement("figure");
+		const figcaption = document.createElement("figcaption");
+		const img = document.createElement("img");
+
+		img.src = element.imageUrl;
+		img.alt = element.title;
+		figcaption.innerHTML += element?.title;
+		figure.dataset.id = element?.category?.id;
+		figure.classList.add("pics");
+
+		gallery.appendChild(figure);
+		figure.appendChild(img);
+		figure.appendChild(figcaption);
+	});
+	isSort();
+};
+
+const hasContentInModal = (response) => {
 	const modalGallery = document.querySelector(".modal-gallery");
 
-	const figureImg = document.createElement("figure");
-	const imgModal = document.createElement("img");
-	const trashIcon = document.createElement("i");
+	response.forEach((element) => {
+		const figureImg = document.createElement("figure");
+		const imgModal = document.createElement("img");
+		const trashIcon = document.createElement("i");
 
-	figureImg.setAttribute("data-id", element.id)
-	figureImg.classList.add("figure-image-modal");
+		figureImg.setAttribute("data-id", element.id);
+		figureImg.classList.add("figure-image-modal");
 
-	imgModal.src = element.imageUrl;
-	imgModal.alt = element.title;
+		imgModal.src = element.imageUrl;
+		imgModal.alt = element.title;
 
-	imgModal.classList.add("small-image");
-	trashIcon.classList.add("fa-" + "solid", "fa-" + "trash-" + "can", "trashIcon");
-	modalGallery.appendChild(figureImg);
-	figureImg.appendChild(imgModal);
-	figureImg.appendChild(trashIcon);
+		imgModal.classList.add("small-image");
+		trashIcon.classList.add(
+			"fa-" + "solid",
+			"fa-" + "trash-" + "can",
+			"trashIcon"
+		);
+		modalGallery.appendChild(figureImg);
+		figureImg.appendChild(imgModal);
+		figureImg.appendChild(trashIcon);
+
 		trashIcon.addEventListener("click", (e) => {
 			e.preventDefault();
-			console.log(e);
+			console.log(e.target);
 			const id = figureImg.getAttribute("data-id");
 			deleteWorks(id, figureImg);
 		});
+	});
 };
 
+const hasIdCategoriesForSort = (elements) => {
+	const isLogged = localStorage.getItem("token");
 
-const hasIdCategoriesForSort = (element) => {
-	const myProject = document.querySelector(".categories");
-	const span = document.createElement("span");
+	if (!isLogged) {
+		const categorieSort = document.querySelector(".categories");
+		const buttonForAll = document.createElement("button");
 
-	span.innerHTML += element?.name;
-	span.classList.add("sort-list");
-	span.setAttribute("id", element?.id);
-	myProject.appendChild(span);
+		buttonForAll.innerText = "Tous";
+		buttonForAll.classList.add("sort-list", "active");
+		buttonForAll.setAttribute("id", "0");
+
+		categorieSort.appendChild(buttonForAll);
+
+		elements.forEach((element) => {
+			const button = document.createElement("button");
+
+			button.innerHTML += element?.name;
+			button.classList.add("sort-list");
+			button.setAttribute("id", element?.id);
+
+			categorieSort.appendChild(button);
+		});
+	}
 };
 
+const selectCategory = function (elements) {
+	const isLogged = localStorage.getItem("token");
 
-
-// const selectCategory = function (element) {
-// 	const categorySelect = document.getElementById("category-select");
-// 	categorySelect.innerHTML = "";
-// 	// Ajout d'un champ vide
-// 	const emptyField = document.createElement("option");
-// 	emptyField.value = "";
-// 	emptyField.innerText = "";
-// 	emptyField.selected = true;
-// 	categorySelect.appendChild(emptyField);
-// 	//Affichage des catégories
-// 	element.forEach((category) => {
-// 		const option = document.createElement("option");
-// 		option.value = category.id;
-// 		option.innerText = category.name;
-// 		categorySelect.appendChild(option);
-// 	});
-// };
-
-
+	if (isLogged) {
+		const categorySelect = document.querySelector("#category-select");
+		categorySelect.innerHTML = "";
+		// Ajout d'un champ vide
+		const emptyField = document.createElement("option");
+		emptyField.value = "";
+		emptyField.innerText = "";
+		emptyField.selected = true;
+		categorySelect.appendChild(emptyField);
+		//Affichage des catégories
+		elements.forEach((category) => {
+			const option = document.createElement("option");
+			option.value = category.name;
+			option.innerText = category.name;
+			categorySelect.appendChild(option);
+		});
+		
+	}
+};
 
 /**
  *
- * @function getWorks is a function to require all data from the api 
- * @function categories is a function to require all categories from the api 
+ * @function getWorks is a function to require all data from the api
+ * @function categories is a function to require all categories from the api
  * @function deleteWorks is a function to delete project elements
- * 
+ *
  */
 
 async function getWorks() {
@@ -104,10 +153,8 @@ async function getWorks() {
 			return response.json();
 		})
 		.then((response) => {
-			response.forEach((element) => {
-				hasMainContent(element);
-				hasContentInModal(element);
-			});
+			hasMainContent(response);
+			hasContentInModal(response);
 		})
 		.catch((error) => {
 			if (error) {
@@ -122,31 +169,29 @@ getWorks();
 async function categories() {
 	const isLogged = localStorage.getItem("token");
 
-	if (!isLogged) {
-		fetch("http://localhost:5678/api/categories", {
-			method: "GET",
-			body: JSON.stringify(),
-			headers: {
-				"Content-Type": "application/json",
-			},
+	fetch("http://localhost:5678/api/categories", {
+		method: "GET",
+		body: JSON.stringify(),
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+		.then((response) => {
+			return response.json();
 		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((response) => {
-				response.forEach((element) => {
-					hasIdCategoriesForSort(element);
-					selectCategory(element);
-				});
-			})
-			.catch((error) => {
-				if (error) {
-					console.error("Network error:", error);
-				} else {
-					console.error("Error:", error.message);
-				}
-			});
-	} else if (isLogged) {
+
+		.then((response) => {
+			hasIdCategoriesForSort(response);
+			selectCategory(response);
+		})
+		.catch((error) => {
+			if (error) {
+				console.error("Network error:", error);
+			} else {
+				console.error("Error:", error.message);
+			}
+		});
+	if (isLogged) {
 		const myProject = document.querySelector(".categories");
 		myProject.style.display = "none";
 	}
@@ -163,19 +208,66 @@ const deleteWorks = async (id) => {
 		},
 	})
 		.then((response) => {
+			if (response.status === 200) {
+				// recréer la liste des images
+				// Methode 1 : Verifier si il y as une différence entre les images dans la galleyr et dans l'API,
+				// si oui, on ajoute la nouvelle image dans la gallery
+				// Methode 2 : Effacer la gallery et recréer la liste des images à partir de l'API nouvellement actualisée
+				hasContentInModal(response);
+			}
+
 			hasContentInModal(id);
+			return response.json();
 		})
-		.then((data) => data)
+		// .then((data) => data)
+		.catch((err) => console.log(err));
+};
+
+const createNewWork = async () => {
+	const image = document.querySelector("#add-photo2").files[0];
+	const title = document.getElementById("titleModalPic").value;
+	const categories = document.querySelector("#category-select").value;
+	const formData = new FormData();
+
+	if (image) {
+		formData.append("imageUrl", image, image.name);
+		formData.append("title", title);
+		formData.append("category", categories);
+	} else {
+		console.log("error");
+	}
+
+	await fetch("http://localhost:5678/api/works", {
+		method: "POST",
+		headers: {
+			Authorization: "Bearer " + localStorage.getItem("token"),
+			Accept: "application/json",
+		},
+		body: formData,
+	})
+		.then((response) => {
+			console.log("projet envoyé avec succès !");
+			if (response.status === 200) {
+				hasContentInModal(response);
+				hasMainContent(response);
+			}
+		})
 		.catch((err) => alert(err));
 };
+
+let validation = document.querySelector("#valider");
+
+validation.addEventListener("click", (event) => {
+	createNewWork();
+});
+
 /**
  *
- * @const isLogged is a arrow function to check if we are logged or note 
- * @const isEditMode is a arrow function to edit you'r profile project 
+ * @const isLogged is a arrow function to check if we are logged or note
+ * @const isEditMode is a arrow function to edit you'r profile project
  * @const hasLogout is a arrow function to logout and return in index
- * 
+ *
  */
-
 
 const isLogged = () => {
 	const isLogged = localStorage.getItem("token");
@@ -196,6 +288,7 @@ const isEditMode = () => {
 	console.log(isLogged);
 	const headEditMode = document.querySelector(".head-edit-mode");
 	const editMode = document.querySelector(".edit-mode");
+
 	if (isLogged) {
 		headEditMode.style.display = "flex";
 		editMode.style.display = "flex";
@@ -217,21 +310,3 @@ const hasLogout = () => {
 };
 
 hasLogout();
-
-
-
-const isSort = () => {
-	const sortList = document.querySelector(".categories");
-	const dataIdPicture = document.getElementsByClassName("pics");
-	console.log(dataIdPicture);
-	// console.log(dataIdPicture.getAttribute("data"));
-	sortList.addEventListener("click", (event) => {
-		event.stopPropagation();
-		console.log("BUBBLING PHASE", "SOOORT");
-		console.log(event.target);
-	});
-};
-
-isSort()
-
-

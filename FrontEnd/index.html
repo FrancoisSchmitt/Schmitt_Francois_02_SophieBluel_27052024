@@ -21,13 +21,12 @@
 		<link rel="stylesheet" href="./assets/reset.css" />
 		<link rel="stylesheet" href="./assets/main.css" />
 		<link rel="stylesheet" href="./assets/style.css" />
-		<link rel="stylesheet" href="./assets/login.css" />
 	</head>
 
 	<body>
 		<div class="head-edit-mode edit">
 			<i class="fa-regular fa-pen-to-square"></i>
-			<p>Mode édition</p>
+			<button>Mode édition</button>
 		</div>
 		<header>
 			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -64,22 +63,22 @@
 						<div class="modal-wrapper" id="add-photo-modal">
 							<ul class="button-modal">
 								<li class="modal-return" id="back-first-modal">
-									<i class="fa-solid fa-arrow-left"></i>
+									<i class="fa-solid fa-arrow-left "></i>
 								</li>
 								<li class="modal-closed-btn" id="closed-btn">
-									<i class="fa-solid fa-xmark"></i>
+									<i class="fa-solid fa-xmark close-edit-picture"></i>
 								</li>
 							</ul>
 							<h3>Ajout photo</h3>
 							<form id="add-photo-form" name="add-photo-form">
-								<ul>
+								<ul class="add-preview">
 									<li>
 										<i class="fa-regular fa-image grey" id="imageMod2"></i><label
 											for="add-photo2" id="labelImageM2">+ Ajouter photo</label>
 										<input class="add-photo2" id="add-photo2" type="file" />
 										<p>jpg, png : 4mo max</p>
 									</li>
-									<li>
+									<li >
 										<img
 											id="preview"
 											src="./assets/images/sophie-bluel.png"
