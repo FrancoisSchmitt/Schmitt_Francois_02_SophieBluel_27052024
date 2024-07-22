@@ -116,20 +116,12 @@ const selectCategory = function (elements) {
 	if (isLogged) {
 		const categorySelect = document.querySelector("#category-select");
 		categorySelect.innerHTML = "";
-		// Ajout d'un champ vide
-		const emptyField = document.createElement("option");
-		emptyField.value = "";
-		emptyField.innerText = "";
-		emptyField.selected = true;
-		categorySelect.appendChild(emptyField);
-		//Affichage des catégories
 		elements.forEach((category) => {
 			const option = document.createElement("option");
-			option.value = category.name;
+			option.value = category.id;
 			option.innerText = category.name;
 			categorySelect.appendChild(option);
 		});
-		
 	}
 };
 
@@ -224,40 +216,37 @@ const deleteWorks = async (id) => {
 };
 
 const createNewWork = async () => {
+	const title = document.querySelector("#titleModalPic").value;
 	const image = document.querySelector("#add-photo2").files[0];
-	const title = document.getElementById("titleModalPic").value;
 	const categories = document.querySelector("#category-select").value;
+	const categoriesINT = parseInt(categories);
 	const formData = new FormData();
-
-	if (image) {
-		formData.append("imageUrl", image, image.name);
-		formData.append("title", title);
-		formData.append("category", categories);
+	if (!image) {
+		alert("Veuillez sélectionner une image");
 	} else {
-		console.log("error");
-	}
+		formData.append("image", image, image.name);
+		formData.append("title", title);
+		formData.append("category", categoriesINT);
 
-	await fetch("http://localhost:5678/api/works", {
-		method: "POST",
-		headers: {
-			Authorization: "Bearer " + localStorage.getItem("token"),
-			Accept: "application/json",
-		},
-		body: formData,
-	})
-		.then((response) => {
-			console.log("projet envoyé avec succès !");
-			if (response.status === 200) {
-				hasContentInModal(response);
-				hasMainContent(response);
+		fetch("http://localhost:5678/api/works", {
+			method: "POST",
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+			body: formData,
+		}).then(function (res) {
+			if (res.ok) {
+				console.log("projet envoyé avec succès !");
+			} else {
+				console.log(res);
 			}
-		})
-		.catch((err) => alert(err));
+		});
+	}
 };
-
 let validation = document.querySelector("#valider");
 
 validation.addEventListener("click", (event) => {
+	event.preventDefault();
 	createNewWork();
 });
 
