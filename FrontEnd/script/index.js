@@ -14,12 +14,13 @@ const isSort = () => {
 	sortList.addEventListener("click", (event) => {
 		let buttons = document.querySelectorAll(".sort-list");
 		for (let i = 0; i < buttons.length; i++) {
-			// console.log(buttons.length)
 			if (buttons[i].classList.contains("active")) {
-				console.log("test");
 				buttons[i].classList.remove("active");
-			} else {
-				event.target.classList.toggle("active");
+				sortList.classList.remove("active")
+			} if (event.target) {
+				// event.target.classList.toggle("active");
+				event.target.classList.add("active");
+				sortList.classList.remove("active");
 			}
 		}
 		event.stopPropagation();
@@ -222,6 +223,22 @@ async function deleteWorks(id) {
 	}
 }
 
+
+function resetForm() {
+	document.getElementById("add-photo-form").reset();
+	const preview = document.querySelector(".new-preview");
+	preview.style.display = "none";
+	preview.remove()
+
+	//Réaffichage des éléments lorsque réinitialisation
+	const addPics = document.querySelector(".hide-for-preview");
+
+	addPics.style.display = "flex";
+
+	const submitBtnM2 = document.getElementById("valider");
+	submitBtnM2.style.backgroundColor = "";
+}
+
 async function createNewWork() {
 	try {
 		const title = document.querySelector("#titleModalPic").value;
@@ -252,6 +269,7 @@ async function createNewWork() {
 
 		if (response.status === 200 || response.status === 201) {
 			getWorks();
+			resetForm();
 		} else {
 			console.error(`Failed to create work, status: ${response.status}`);
 		}
