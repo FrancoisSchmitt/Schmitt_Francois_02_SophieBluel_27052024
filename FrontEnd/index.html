@@ -47,7 +47,7 @@
 					<!-- Modal content -->
 					<div class="modal-content">
 						<span class="close-edit-picture close">&times;</span>
-						<h2>Gallery photos</h2>
+						<h3>Gallery photos</h3>
 						<div class="modal-gallery"></div>
 						<button id="create">Ajouter une photo</button>
 					</div>
@@ -72,15 +72,17 @@
 							<h3>Ajout photo</h3>
 							<form id="add-photo-form" name="add-photo-form">
 								<ul class="add-preview">
-									<li>
-										<i class="fa-regular fa-image grey" id="imageMod2"></i><label
+									<li class="add-pics-file">
+										<div class="hide-for-preview">
+											<i class="fa-regular fa-image grey" id="imageMod2"></i><label
 											for="add-photo2" id="labelImageM2">+ Ajouter photo</label>
-										<input class="add-photo2" id="add-photo2" type="file" />
-										<p>jpg, png : 4mo max</p>
+											<input class="add-photo2" id="add-photo2" type="file" />
+											<p>jpg, png : 4mo max</p>
+										</div>
 									</li>
-									<li >
+									<li id="preview">
 										<img
-											id="preview"
+											id="preview-pics"
 											src="./assets/images/sophie-bluel.png"
 											alt="Prévisualisation de l'image"
 											/>
@@ -95,9 +97,10 @@
 									<select name="category" id="category-select">
 									</select>
 								</div>
+								<button type="submit" id="valider" disabled >Valider</button>
+								<!-- <input type="submit" id="valider" value="Valider" /> -->
 							</form>
 						</div>
-						<input type="submit" id="valider" value="Valider" />
 					</div>
 				</div>
 			</section>
@@ -130,7 +133,7 @@
 					<h2 id="project">Mes Projets</h2>
 					<div class="edit-mode edit">
 						<i class="fa-regular fa-pen-to-square"></i>
-						<button id="myBtn">Open Modal</button>
+						<button id="myBtn">Modifier</button>
 					</div>
 					<div class="categories"></div>
 				</div>

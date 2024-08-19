@@ -22,20 +22,32 @@ const isModalAddPictureOpen = () => {
 };
 
 const isModalPictureClose = () => {
-	const modalAddPictureOpen = document.querySelector("#add-picture");
+	const modalPictureOpen = document.querySelector("#edit-picture");
 	const closeModal = document.querySelector(".close-edit-picture");
 
 	closeModal.addEventListener("click", (event) => {
-		modalAddPictureOpen.style.display = "none";
+		modalPictureOpen.style.display = "none";
 	});
 };
 
 const isModalAddPictureClose = () => {
-	const modalPictureIsHide = document.querySelector("#edit-picture");
-	const closeModal = document.querySelector(".close-edit-picture");
+	const modalPictureIsHide = document.querySelector("#add-picture");
+	const closeModal = document.querySelector(".modal-closed-btn");
+	const returnBack = document.querySelector(".modal-return");
+	const modalPictureOpen = document.querySelector("#edit-picture");
+	const valider = document.querySelector("#valider");
+
 
 	closeModal.addEventListener("click", (event) => {
 		modalPictureIsHide.style.display = "none";
+	});
+	valider.addEventListener("click", (event) => {
+		modalPictureIsHide.style.display = "none";
+	});
+
+	returnBack.addEventListener("click", (event) => {
+		modalPictureIsHide.style.display = "none";
+		modalPictureOpen.style.display = "block"
 	});
 };
 
@@ -48,10 +60,18 @@ const imageInput = document.querySelector("#add-photo2");
 
 imageInput.addEventListener("change", imgPreview);
 function imgPreview() {
+	const valider = document.querySelector("#valider");
 	const fileExtension = /\.(jpg|png)$/i;
 	if (this.files.length === 0 || !fileExtension.test(this.files[0].name)) {
+		valider.setAttribute("disabled");
+		valider.classList.remove("green")
 		return;
+	} else {
+		valider.classList.add("green");
+
+		valider.removeAttribute("disabled");
 	}
+
 
 	addPicturesElements.style.display = "none";
 
@@ -64,7 +84,10 @@ function imgPreview() {
 
 function displayImage(e, file) {
 	const figure_element = document.createElement("img");
+	const hideFileUpdate = document.querySelector(".hide-for-preview");
 	const image_blob = new Blob([e.target.result], { type: file.type });
 	figure_element.src = URL.createObjectURL(image_blob);
-	document.querySelector(".add-preview").appendChild(figure_element);
+	figure_element.classList.add("new-preview")
+	document.querySelector(".add-pics-file").appendChild(figure_element);
+	hideFileUpdate.style.display = "none"
 }

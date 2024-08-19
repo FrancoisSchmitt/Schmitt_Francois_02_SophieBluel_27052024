@@ -1,10 +1,23 @@
+.head-edit-mode button {
+	background: black;
+	color: #fff;
+	border: none;
+}
+
+#myBtn {
+	background: #FFF;
+	color: #000;
+	border: none;
+}
+
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
 
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 
 #introduction img {
@@ -14,7 +27,7 @@
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 
 #introduction h2 {
@@ -22,7 +35,7 @@
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+	margin-bottom: .5em;
 }
 
 #portfolio h2 {
@@ -30,37 +43,38 @@
 	margin-bottom: 1em;
 }
 
-.head-edit-mode, .edit-mode {
+.edit-mode,
+.head-edit-mode {
 	display: none;
 	flex-direction: row;
 	justify-content: center;
-	gap: 1em;
-
+	gap: .5em;
 }
 
 .edit-mode {
 	align-items: center;
 }
-.edit i, .edit button{
+
+.edit button,
+.edit i {
 	cursor: pointer;
 }
 
 .head-edit-mode {
 	width: 100%;
-	background-color: black;
-	color: white;
+	background-color: #000;
+	color: #fff;
 	align-items: center;
 	height: 59px;
 	margin-bottom: 38px;
 }
 
 .my-project {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1em;
-    align-items: center;
-
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1em;
+	align-items: center;
 }
 
 .small-image {
@@ -84,7 +98,6 @@
 
 .gallery img {
 	width: 100%;
-
 }
 
 #contact {
@@ -94,7 +107,6 @@
 
 #contact>* {
 	text-align: center;
-
 }
 
 #contact h2 {
@@ -112,7 +124,7 @@
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, .09);
 }
 
 #contact label {
@@ -121,14 +133,15 @@
 
 #contact textarea {
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, .09);
 }
 
-input[type="submit"], #create {
-	font-family: 'Syne';
+#create,
+input[type=submit] {
+	font-family: Syne;
 	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
+	color: #fff;
+	background-color: #1d6154;
 	margin: 2em auto;
 	width: 180px;
 	text-align: center;
@@ -142,7 +155,7 @@ input[type="submit"], #create {
 	grid-template-columns: repeat(5, 1fr);
 	width: 76px;
 	gap: 2em;
-
+	margin-left: 3.5em;
 }
 
 .figure-image-modal {
@@ -155,15 +168,136 @@ input[type="submit"], #create {
 	display: block;
 	position: absolute;
 	box-sizing: border-box;
-	color: white;
-	background-color: black;
+	color: #fff;
+	background-color: #000;
 	width: 27%;
 	height: 18%;
 	padding: 4px 5px;
 	border-radius: 20%;
-	top: 0.4em;
-	right: 0.4em;
+	top: .4em;
+	right: .4em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.button-modal {
+	display: flex;
+	justify-content: space-between;
+}
+
+.modal-wrapper h3 {
+	font-size: 26px;
+	text-align: center;
+	margin: 1em 0;
+}
+
+.add-preview {
+	margin-bottom: 2em;
+}
+
+.add-preview li {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1em;
+	width: 60%;
+	margin: auto;
+	background-color: #e8f1f6;
+	padding: 2.5em;
+	cursor: pointer;
+
+}
+
+.fa-image:before {
+	font-size: 5em;
+	color: #CBD6DC;
+}
+
+#labelImageM2 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 173px;
+	height: 36px;
+	gap: 0px;
+	border-radius: 60px;
+	background: #CBD6DC;
+}
+
+.add-preview:hover li {
+	color: #000;
+}
+
+.infoCategoryPicModale,
+.infoTitlePicModale {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 72%;
+	margin: auto;
+	margin-bottom: 1.5em;
+}
+
+.labelTitleModal {
+	margin-bottom: 1em;
+}
+
+#category-select,
+#titleModalPic {
+	height: 51px;
+	border: none;
+	box-shadow: 0 4px 14px 0 #00000017;
+}
+
+#valider {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 237px;
+	height: 36px;
+	border-radius: 60px;
+	border: none;
+	margin: auto;
+	background-color: #a7a7a7;
+	color: #fff;
+	font-family: Syne;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 16.8px;
+}
+
+#add-photo2 {
+	display: none;
+}
+
+.wrap {
+	flex-direction: row;
+	align-items: baseline;
+}
+
+.hide-for-preview {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+}
+
+#preview {
+	display: none;
+}
+
+.new-preview {
+	width: 129px;
+	height: 193px;
+}
+
+.green{
+	background-color: #1d6154!important;
+}
+
+.active{
+	background-color: #1d6154;
+	color: #FFF;
 }

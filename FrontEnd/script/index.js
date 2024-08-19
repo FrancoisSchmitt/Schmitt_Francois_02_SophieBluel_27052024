@@ -9,18 +9,23 @@
 
 const isSort = () => {
 	const sortList = document.querySelector(".categories");
-	// const elemSortList = document.querySelectorAll(".sort-list");
 	const dataIdPicture = document.querySelectorAll(".pics");
-	// sortList.forEach((element) => {
+
 	sortList.addEventListener("click", (event) => {
+		let buttons = document.querySelectorAll(".sort-list");
+		for (let i = 0; i < buttons.length; i++) {
+			// console.log(buttons.length)
+			if (buttons[i].classList.contains("active")) {
+				console.log("test");
+				buttons[i].classList.remove("active");
+			} else {
+				event.target.classList.toggle("active");
+			}
+		}
 		event.stopPropagation();
-		// console.log(sort);
-		console.log(event.target);
 		dataIdPicture.forEach((element) => {
-			// elemSortList.forEach((elementSort) => {
 			if (element.dataset.id !== event.target.id) {
 				element.style.display = "none";
-				event.target.classList.add("active");
 			} else {
 				element.style.display = "block";
 			}
@@ -31,10 +36,13 @@ const isSort = () => {
 	});
 };
 
-const hasMainContent = (elements) => {
+function hasMainContent(elements) {
 	const gallery = document.querySelector(".gallery");
+	gallery.innerHTML = "";
+	// console.log(elements);
 
-	elements.forEach((element) => {
+	for (let i = 0; i < elements.length; i++) {
+		const element = elements[i];
 		const figure = document.createElement("figure");
 		const figcaption = document.createElement("figcaption");
 		const img = document.createElement("img");
@@ -48,14 +56,16 @@ const hasMainContent = (elements) => {
 		gallery.appendChild(figure);
 		figure.appendChild(img);
 		figure.appendChild(figcaption);
-	});
+	}
 	isSort();
-};
+}
 
-const hasContentInModal = (response) => {
+function hasContentInModal(works) {
 	const modalGallery = document.querySelector(".modal-gallery");
+	modalGallery.innerHTML = "";
 
-	response.forEach((element) => {
+	for (let i = 0; i < works.length; i++) {
+		const element = works[i];
 		const figureImg = document.createElement("figure");
 		const imgModal = document.createElement("img");
 		const trashIcon = document.createElement("i");
@@ -72,18 +82,18 @@ const hasContentInModal = (response) => {
 			"fa-" + "trash-" + "can",
 			"trashIcon"
 		);
+
 		modalGallery.appendChild(figureImg);
 		figureImg.appendChild(imgModal);
 		figureImg.appendChild(trashIcon);
 
 		trashIcon.addEventListener("click", (e) => {
 			e.preventDefault();
-			console.log(e.target);
 			const id = figureImg.getAttribute("data-id");
 			deleteWorks(id, figureImg);
 		});
-	});
-};
+	}
+}
 
 const hasIdCategoriesForSort = (elements) => {
 	const isLogged = localStorage.getItem("token");
@@ -134,28 +144,26 @@ const selectCategory = function (elements) {
  */
 
 async function getWorks() {
-	fetch("http://localhost:5678/api/works", {
-		method: "GET",
-		body: JSON.stringify(),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
-		.then((response) => {
-			return response.json();
-		})
-		.then((response) => {
-			hasMainContent(response);
-			hasContentInModal(response);
-		})
-		.catch((error) => {
-			if (error) {
-				console.error("Network error:", error);
-			} else {
-				console.error("Error:", error.message);
-			}
+	try {
+		const response = await fetch(`http://localhost:5678/api/works`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
 		});
+
+		if (!response.ok) {
+			throw new Error("HTTP erreur, status", response.status);
+		}
+
+		const data = await response.json();
+		hasMainContent(data);
+		hasContentInModal(data);
+	} catch (error) {
+		console.error("Error to get works", error.message);
+	}
 }
+
 getWorks();
 
 async function categories() {
@@ -191,61 +199,70 @@ async function categories() {
 
 categories();
 
-const deleteWorks = async (id) => {
-	await fetch("http://localhost:5678/api/works/" + id, {
-		method: "DELETE",
-		headers: {
-			Authorization: "Bearer " + localStorage.getItem("token"),
-			Accept: "application/json",
-		},
-	})
-		.then((response) => {
-			if (response.status === 200) {
-				// recréer la liste des images
-				// Methode 1 : Verifier si il y as une différence entre les images dans la galleyr et dans l'API,
-				// si oui, on ajoute la nouvelle image dans la gallery
-				// Methode 2 : Effacer la gallery et recréer la liste des images à partir de l'API nouvellement actualisée
-				hasContentInModal(response);
-			}
+async function deleteWorks(id) {
+	try {
+		const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				Accept: "application/json",
+			},
+		});
 
-			hasContentInModal(id);
-			return response.json();
-		})
-		// .then((data) => data)
-		.catch((err) => console.log(err));
-};
+		if (response.status === 200 || response.status === 204) {
+			console.log(`Deleted work with ID: ${id}`);
+			await getWorks();
+		} else {
+			console.error(
+				`Failed to delete work with ID: ${id}, status: ${response.status}`
+			);
+		}
+	} catch (error) {
+		console.error("Failed to delete work:", error.message);
+	}
+}
 
-const createNewWork = async () => {
-	const title = document.querySelector("#titleModalPic").value;
-	const image = document.querySelector("#add-photo2").files[0];
-	const categories = document.querySelector("#category-select").value;
-	const categoriesINT = parseInt(categories);
-	const formData = new FormData();
-	if (!image) {
-		alert("Veuillez sélectionner une image");
-	} else {
-		formData.append("image", image, image.name);
-		formData.append("title", title);
-		formData.append("category", categoriesINT);
-
-		fetch("http://localhost:5678/api/works", {
+async function createNewWork() {
+	try {
+		const title = document.querySelector("#titleModalPic").value;
+		const closeModal = document.querySelector("#add-picture");
+		const image = document.querySelector("#add-photo2").files[0];
+		const categories = document.querySelector("#category-select").value;
+		const categoriesINT = parseInt(categories);
+		const formData = new FormData();
+		
+		if (image) {
+			formData.append("image", image, image.name);
+			formData.append("title", title);
+			formData.append("category", categoriesINT);
+			closeModal.addEventListener("click", (event) => {
+				closeModal.style.display = "none!important";
+			});
+			
+		} else {
+			alert("Veuillez sélectionner une image");
+		}
+		const response = await fetch("http://localhost:5678/api/works", {
 			method: "POST",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			body: formData,
-		}).then(function (res) {
-			if (res.ok) {
-				console.log("projet envoyé avec succès !");
-			} else {
-				console.log(res);
-			}
 		});
-	}
-};
-let validation = document.querySelector("#valider");
 
-validation.addEventListener("click", (event) => {
+		if (response.status === 200 || response.status === 201) {
+			getWorks();
+		} else {
+			console.error(`Failed to create work, status: ${response.status}`);
+		}
+	} catch (error) {
+		console.error("Failed to create work:", error.message);
+	}
+}
+
+const form = document.querySelector("#add-photo-form");
+
+form.addEventListener("submit", (event) => {
 	event.preventDefault();
 	createNewWork();
 });
@@ -274,13 +291,15 @@ isLogged();
 
 const isEditMode = () => {
 	const isLogged = localStorage.getItem("token");
-	console.log(isLogged);
+	// console.log(isLogged);
 	const headEditMode = document.querySelector(".head-edit-mode");
 	const editMode = document.querySelector(".edit-mode");
+	const addClass = document.querySelector(".my-project");
 
 	if (isLogged) {
 		headEditMode.style.display = "flex";
 		editMode.style.display = "flex";
+		addClass.classList.add("wrap");
 	}
 };
 isEditMode();
