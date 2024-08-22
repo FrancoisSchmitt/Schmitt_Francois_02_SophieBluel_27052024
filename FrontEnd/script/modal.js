@@ -61,21 +61,18 @@ const imageInput = document.querySelector("#add-photo2");
 imageInput.addEventListener("change", imgPreview);
 function imgPreview() {
 	
-	const title = document.querySelector("#titleModalPic");
+	const title = document.querySelector("#titleModalPic").value;
 	const valider = document.querySelector("#valider");
 	const fileExtension = /\.(jpg|png)$/i;
-	console.log(title.length);
-	if (
-		title.length === 0 &&
-		this.files.length === 0 ||
-		!fileExtension.test(this.files[0].name)
-	) {
+	if (!title.length === 0 && this.files.length > 0 && !fileExtension.test(this.files[0].name)) {
 		valider.setAttribute("disabled");
 		valider.classList.remove("green");
 		return;
 	} else {
 		valider.classList.add("green")
 		valider.removeAttribute("disabled");
+		console.log(valider)
+		console.log(title)
 	}
 	
 	

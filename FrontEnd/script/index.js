@@ -248,17 +248,18 @@ async function createNewWork() {
 		const categoriesINT = parseInt(categories);
 		const formData = new FormData();
 		
-		if (image && title.length > 0 && categoriesINT) {
+		if (image && title.length > 3) {
 			formData.append("image", image, image.name);
 			formData.append("title", title);
 			formData.append("category", categoriesINT);
+			
 			closeModal.addEventListener("click", (event) => {
 				closeModal.style.display = "none!important";
 			});
 			
+			
 		} else {
 			alert("Assurez vous que tout les champs soit remplis");
-
 		}
 		const response = await fetch("http://localhost:5678/api/works", {
 			method: "POST",
