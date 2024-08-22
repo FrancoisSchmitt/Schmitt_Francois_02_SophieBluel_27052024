@@ -308,9 +308,9 @@ async function createNewWork() {
 	
 }
 
-		const title = document.querySelector("#titleModalPic");
-		const file = document.querySelector("#add-photo2").files[0];
-		const validateButton = document.querySelector("#valider");
+const title = document.querySelector("#titleModalPic");
+const file = document.querySelector("#add-photo2").files[0];
+const validateButton = document.querySelector("#valider");
 
 title.addEventListener("change", (event) => {
 	const titleText = title.value;
@@ -331,6 +331,7 @@ const form = document.querySelector("#add-photo-form");
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
 	createNewWork();
+	validateButton.setAttribute("disabled", true);
 });
 
 
