@@ -248,7 +248,7 @@ async function createNewWork() {
 		const categoriesINT = parseInt(categories);
 		const formData = new FormData();
 		
-		if (image) {
+		if (image && title.length > 0 && categoriesINT) {
 			formData.append("image", image, image.name);
 			formData.append("title", title);
 			formData.append("category", categoriesINT);
@@ -257,7 +257,8 @@ async function createNewWork() {
 			});
 			
 		} else {
-			alert("Veuillez sélectionner une image");
+			alert("Assurez vous que tout les champs soit remplis");
+
 		}
 		const response = await fetch("http://localhost:5678/api/works", {
 			method: "POST",
