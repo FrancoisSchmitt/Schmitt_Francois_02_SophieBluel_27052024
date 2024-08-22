@@ -37,7 +37,6 @@ const isModalAddPictureClose = () => {
 	const modalPictureOpen = document.querySelector("#edit-picture");
 	const valider = document.querySelector("#valider");
 
-
 	closeModal.addEventListener("click", (event) => {
 		modalPictureIsHide.style.display = "none";
 	});
@@ -47,7 +46,7 @@ const isModalAddPictureClose = () => {
 
 	returnBack.addEventListener("click", (event) => {
 		modalPictureIsHide.style.display = "none";
-		modalPictureOpen.style.display = "block"
+		modalPictureOpen.style.display = "block";
 	});
 };
 
@@ -59,20 +58,11 @@ const addPicturesElements = document.querySelector("#preview");
 const imageInput = document.querySelector("#add-photo2");
 
 imageInput.addEventListener("change", imgPreview);
+ 
 function imgPreview() {
-	
-	const title = document.querySelector("#titleModalPic").value;
-	const valider = document.querySelector("#valider");
 	const fileExtension = /\.(jpg|png)$/i;
-	if (!title.length === 0 && this.files.length > 0 && !fileExtension.test(this.files[0].name)) {
-		valider.setAttribute("disabled");
-		valider.classList.remove("green");
+	if (this.files.length === 0 || !fileExtension.test(this.files[0].name)) {
 		return;
-	} else {
-		valider.classList.add("green")
-		valider.removeAttribute("disabled");
-		console.log(valider)
-		console.log(title)
 	}
 	
 	
@@ -83,7 +73,7 @@ function imgPreview() {
 	const file_reader = new FileReader();
 	file_reader.readAsArrayBuffer(file);
 	file_reader.addEventListener("load", (e) => displayImage(e, file));
-	console.log(file_reader)
+	console.log(file_reader);
 }
 
 function displayImage(e, file) {
@@ -91,7 +81,7 @@ function displayImage(e, file) {
 	const hideFileUpdate = document.querySelector(".hide-for-preview");
 	const image_blob = new Blob([e.target.result], { type: file.type });
 	figure_element.src = URL.createObjectURL(image_blob);
-	figure_element.classList.add("new-preview")
+	figure_element.classList.add("new-preview");
 	document.querySelector(".add-pics-file").appendChild(figure_element);
-	hideFileUpdate.style.display = "none"
+	hideFileUpdate.style.display = "none";
 }

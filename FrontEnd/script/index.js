@@ -16,8 +16,9 @@ const isSort = () => {
 		for (let i = 0; i < buttons.length; i++) {
 			if (buttons[i].classList.contains("active")) {
 				buttons[i].classList.remove("active");
-				sortList.classList.remove("active")
-			} if (event.target) {
+				sortList.classList.remove("active");
+			}
+			if (event.target) {
 				// event.target.classList.toggle("active");
 				event.target.classList.add("active");
 				sortList.classList.remove("active");
@@ -223,12 +224,11 @@ async function deleteWorks(id) {
 	}
 }
 
-
 function resetForm() {
 	document.getElementById("add-photo-form").reset();
 	const preview = document.querySelector(".new-preview");
 	preview.style.display = "none";
-	preview.remove()
+	preview.remove();
 
 	//Réaffichage des éléments lorsque réinitialisation
 	const addPics = document.querySelector(".hide-for-preview");
@@ -239,28 +239,54 @@ function resetForm() {
 	submitBtnM2.style.backgroundColor = "";
 }
 
+function disabled() {
+	const title = document.querySelector("#titleModalPic").value;
+	const image = document.querySelector("#add-photo2").files[0];
+	const valider = document.querySelector("#valider");
+
+	if (title.length > 0 && image) {
+		valider.removeAttribute("disabled")
+		valider.classList.add("green")
+		console.log(title.length)
+	}
+	
+}
+disabled();
+
+
+
+
 async function createNewWork() {
 	try {
 		const title = document.querySelector("#titleModalPic").value;
-		const closeModal = document.querySelector("#add-picture");
 		const image = document.querySelector("#add-photo2").files[0];
+		const closeModal = document.querySelector("#add-picture");
 		const categories = document.querySelector("#category-select").value;
 		const categoriesINT = parseInt(categories);
 		const formData = new FormData();
+		const validateButton = document.querySelector("#valider");
 		
-		if (image && title.length > 3) {
+		if (title.length == 0) {
+			console.log(title.length)
+			validateButton.style.backgroundColor = "#1d6154";
+			validateButton.removeAttribute("disabled");
+		} else {
+			validateButton.style.backgroundColor = "#a7a7a7";
+		}
+		
+		if (image) {
 			formData.append("image", image, image.name);
 			formData.append("title", title);
 			formData.append("category", categoriesINT);
-			
+
 			closeModal.addEventListener("click", (event) => {
 				closeModal.style.display = "none!important";
 			});
-			
-			
 		} else {
 			alert("Assurez vous que tout les champs soit remplis");
 		}
+		
+		
 		const response = await fetch("http://localhost:5678/api/works", {
 			method: "POST",
 			headers: {
@@ -278,7 +304,27 @@ async function createNewWork() {
 	} catch (error) {
 		console.error("Failed to create work:", error.message);
 	}
+	
+	
 }
+
+		const title = document.querySelector("#titleModalPic");
+		const file = document.querySelector("#add-photo2").files[0];
+		const validateButton = document.querySelector("#valider");
+
+title.addEventListener("change", (event) => {
+	const titleText = title.value;
+
+	// (Si les champs de formulaire sont valides alors on change la couleur du bouton valider)
+	if (file != null && titleText.length > 0) {
+		validateButton.setAttribute("disabled", true);
+		validateButton.style.backgroundColor = "#a7a7a7";
+	} else {
+		validateButton.removeAttribute("disabled");
+		validateButton.style.backgroundColor = "#1d6154";
+	}
+});
+
 
 const form = document.querySelector("#add-photo-form");
 
@@ -286,6 +332,8 @@ form.addEventListener("submit", (event) => {
 	event.preventDefault();
 	createNewWork();
 });
+
+
 
 /**
  *
